@@ -1,0 +1,48 @@
+{
+  "name": "climate-ticker",
+  "version": "1.0.0",
+  "description": "A compact, dependency-free widget showing carbon released, heat trapped, and global warming since 1850 — ticking in real time. Ships as a Web Component (<climate-ticker>) and a standalone iframe page.",
+  "main": "climate-ticker.js",
+  "type": "commonjs",
+  "files": [
+    "climate-ticker.js",
+    "widget.html",
+    "embed.html",
+    "index.html",
+    "build.js",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node build.js",
+    "start": "python3 -m http.server 4178"
+  },
+  "keywords": [
+    "climate",
+    "climate-change",
+    "global-warming",
+    "carbon",
+    "widget",
+    "web-component",
+    "custom-element",
+    "embed",
+    "data-visualization",
+    "vanilla-js"
+  ],
+  "author": "matwilk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/USER/REPO.git"
+  },
+  "homepage": "https://github.com/USER/REPO#readme",
+  "bugs": {
+    "url": "https://github.com/USER/REPO/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "sideEffects": [
+    "climate-ticker.js"
+  ]
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Climate Ticker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div class="cs-widget">
+      <h1 class="cs-title">Climate Ticker</h1>
+
+      <section class="cs-block">
+        <div class="cs-counter" id="carbon-odo"></div>
+        <div class="cs-row">
+          <span class="cs-caption">Carbon released since 1850</span>
+          <div class="cs-toggle" data-metric="carbon">
+            <button data-unit="kg">kg C</button>
+            <button data-unit="valdez">Valdez loads</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-block">
+        <div class="cs-counter" id="energy-odo"></div>
+        <div class="cs-row">
+          <span class="cs-caption">Extra heat trapped since 1850</span>
+          <div class="cs-toggle" data-metric="energy">
+            <button data-unit="kj">kJ</button>
+            <button data-unit="hiroshima">Hiroshima bombs</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-block">
+        <div class="cs-counter" id="warming-odo"></div>
+        <div class="cs-row">
+          <span class="cs-caption">Global warming since 1850</span>
+          <div class="cs-toggle" data-metric="temp">
+            <button data-unit="c">°C</button>
+            <button data-unit="f">°F</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="cs-block">
+        <div class="cs-row cs-proj-head">
+          <h2>Projected warming</h2>
+          <span class="cs-proj-unit">since 1850</span>
+        </div>
+        <div id="proj-rows"></div>
+        <p class="cs-proj-caption">
+          Dashed lines mark the <strong>1.5&deg;C</strong> and <strong>2&deg;C</strong>
+          Paris limits. Even if emissions stopped now, ~0.2&deg;C more is locked in
+          as cooling aerosols fade.
+        </p>
+      </section>
+
+      <details class="cs-disclosure cs-foot">
+        <summary>About these figures &amp; sources</summary>
+        <div class="cs-disclosure-body">
+          <p>
+            Counters accrue from cumulative totals since 1850 at present-day
+            rates: carbon ~360,000&nbsp;kg&nbsp;C/s (41.6&nbsp;Gt&nbsp;CO<sub>2</sub>/yr);
+            excess heat ~6.99&times;10<sup>11</sup>&nbsp;kJ/s (Earth&rsquo;s energy
+            imbalance ~1.37&nbsp;W/m&sup2;, &asymp;11 Hiroshima bombs per second).
+            Warming rises ~0.27&deg;C/decade from ~1.44&deg;C today.
+          </p>
+          <p>
+            &ldquo;Stop today&rdquo; reflects committed warming: CO<sub>2</sub>-only
+            warming roughly stabilises (Zero Emissions Commitment ~0&plusmn;0.3&deg;C,
+            IPCC AR6), but losing the ~0.5&deg;C of aerosol &ldquo;masking&rdquo;
+            unmasks a few tenths more. Lines are constant-rate extrapolations &mdash;
+            illustrative, not IPCC scenarios.
+          </p>
+          <p class="cs-sources">
+            Sources:
+            <a href="https://globalcarbonbudget.org/" target="_blank" rel="noopener">Global Carbon Budget 2024</a> &middot;
+            <a href="https://www.ipcc.ch/report/ar6/wg1/" target="_blank" rel="noopener">IPCC AR6 WG1</a> &middot;
+            <a href="https://berkeleyearth.org/global-temperature-report-for-2024/" target="_blank" rel="noopener">Berkeley Earth</a>
+          </p>
+        </div>
+      </details>
+    </div>
+
+    <script src="./src/constants.js"></script>
+    <script src="./src/odometer.js"></script>
+    <script src="./src/units.js"></script>
+    <script src="./src/projections.js"></script>
+    <script src="./src/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Climate Ticker — embed</title>
+    <style>
+      :root {
+        --ink: #0e1116;
+        --muted: #5c6773;
+        --line: #e3e7ec;
+        --accent: #d2603a;
+        --code-bg: #0e1116;
+        --code-fg: #e6edf3;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 48px 20px;
+        font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--ink);
+        background: #fafbfc;
+      }
+      .wrap { max-width: 760px; margin: 0 auto; }
+      h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -0.01em; }
+      .lede { color: var(--muted); margin: 0 0 36px; }
+      h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 40px 0 12px; }
+      p { color: #2b333d; }
+      .demo { display: flex; justify-content: center; padding: 28px; background: #f0f2f5; border: 1px solid var(--line); border-radius: 14px; }
+      .snippet { position: relative; margin: 12px 0 4px; }
+      pre {
+        margin: 0;
+        padding: 16px 84px 16px 16px;
+        background: var(--code-bg);
+        color: var(--code-fg);
+        border-radius: 10px;
+        overflow-x: auto;
+        font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .copy {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        font: 600 12px ui-sans-serif, system-ui, sans-serif;
+        color: #fff;
+        background: var(--accent);
+        border: 0;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      .copy:hover { filter: brightness(1.08); }
+      .note { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+      code.inline { background: #eceef1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+      ul { color: #2b333d; padding-left: 20px; }
+      li { margin: 4px 0; }
+      a { color: var(--accent); }
+      footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Climate Ticker</h1>
+      <p class="lede">
+        A compact, self-contained widget showing carbon released, heat trapped,
+        and global warming since 1850 — ticking in real time. Drop it into any
+        page or footer. No tracking, no cookies, no network calls.
+      </p>
+
+      <h2>Live preview</h2>
+      <div class="demo">
+        <climate-ticker></climate-ticker>
+      </div>
+
+      <h2>Option 1 — Web Component (recommended)</h2>
+      <p>
+        One script tag, one element. Styles are sealed inside a Shadow DOM, so
+        it never clashes with your page. Re-theme it with CSS variables if you like.
+      </p>
+      <div class="snippet">
+        <button class="copy" data-target="snip-wc">Copy</button>
+        <pre id="snip-wc">&lt;script src="https://cdn.jsdelivr.net/gh/USER/REPO@1.0.0/climate-ticker.js"&gt;&lt;/script&gt;
+&lt;climate-ticker&gt;&lt;/climate-ticker&gt;</pre>
+      </div>
+      <p class="note">
+        Optional theming: <code class="inline">climate-ticker { --cs-bg:#fff; --cs-text:#111; }</code>
+      </p>
+
+      <h2>Option 2 — iframe (simplest, great for footers)</h2>
+      <p>
+        Total isolation, paste-and-go. Best when you can’t add a script tag
+        (CMS footers, marketing pages).
+      </p>
+      <div class="snippet">
+        <button class="copy" data-target="snip-if">Copy</button>
+        <pre id="snip-if">&lt;iframe src="https://USER.github.io/REPO/widget.html"
+        width="420" height="640" loading="lazy"
+        style="border:0;max-width:100%"
+        title="Climate Ticker — real-time climate counters"&gt;&lt;/iframe&gt;</pre>
+      </div>
+
+      <h2>Hosting &amp; pinning</h2>
+      <ul>
+        <li>Push the repo to GitHub — <code class="inline">climate-ticker.js</code> and <code class="inline">widget.html</code> are then served free via <strong>jsDelivr</strong> (<code class="inline">cdn.jsdelivr.net/gh/USER/REPO@TAG/…</code>) or GitHub Pages.</li>
+        <li>Pin a version tag (e.g. <code class="inline">@1.0.0</code>) so embeds never break on an update.</li>
+        <li>For extra integrity, add a Subresource Integrity hash to the script tag:
+          <code class="inline">integrity="sha384-…" crossorigin="anonymous"</code>.</li>
+      </ul>
+
+      <footer>
+        MIT licensed. Replace <code class="inline">USER/REPO</code> with your GitHub
+        path. Figures &amp; sources are documented inside the widget.
+      </footer>
+    </div>
+
+    <script src="./climate-ticker.js"></script>
+    <script>
+      document.querySelectorAll('.copy').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var el = document.getElementById(btn.dataset.target);
+          var text = el.textContent;
+          navigator.clipboard.writeText(text).then(function () {
+            var was = btn.textContent;
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = was; }, 1400);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

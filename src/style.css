@@ -1,0 +1,316 @@
+/* CarbonSurge — design tokens and layout. Sidebar-ready, max 420px. */
+:root {
+  --cs-bg: #0e1116;
+  --cs-panel: #161b22;
+  --cs-border: #232a33;
+  --cs-text: #e6edf3;
+  --cs-muted: #8b949e;
+  --cs-carbon: #ff7a3c;
+  --cs-energy: #ffc24b;
+  --cs-warm: #f0666b;
+  --cs-stop: #3fb950;
+  --cs-track: #2a313b;
+}
+
+.cs-widget {
+  box-sizing: border-box;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 18px;
+  background: var(--cs-bg);
+  color: var(--cs-text);
+  font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  border: 1px solid var(--cs-border);
+  border-radius: 14px;
+}
+.cs-widget *,
+.cs-widget *::before,
+.cs-widget *::after {
+  box-sizing: border-box;
+}
+
+.cs-title {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cs-muted);
+}
+
+.cs-block {
+  padding: 14px;
+  margin-bottom: 12px;
+  background: var(--cs-panel);
+  border: 1px solid var(--cs-border);
+  border-radius: 10px;
+}
+
+.cs-counter {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Odometer reels (set inline for size/colour by the engine). */
+.cs-odo {
+  display: inline-flex;
+  align-items: stretch;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+.cs-reel {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.cs-strip {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  will-change: transform;
+}
+.cs-digit {
+  display: block;
+  text-align: center;
+}
+.cs-sep {
+  display: inline-block;
+  text-align: center;
+  align-self: flex-end;
+  font-weight: 700;
+}
+
+.cs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+.cs-caption {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--cs-muted);
+}
+
+/* Toggles */
+.cs-toggle {
+  display: inline-flex;
+  flex: none;
+  border: 1px solid var(--cs-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.cs-toggle button {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 5px 10px;
+  background: transparent;
+  color: var(--cs-muted);
+  font-family: inherit;
+  font-size: 10.5px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.cs-toggle button.active {
+  background: var(--cs-text);
+  color: var(--cs-bg);
+  font-weight: 700;
+}
+
+/* Projections */
+.cs-proj-head {
+  margin: 0 0 12px;
+  align-items: baseline;
+}
+.cs-proj-head h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-muted);
+}
+.cs-proj-unit {
+  flex: none;
+  font-size: 9.5px;
+  color: var(--cs-muted);
+  opacity: 0.7;
+}
+/* Shared column geometry: [ name ] [ flexible bar ] [ value ] */
+.cs-proj-axis,
+.cs-proj-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cs-proj-name {
+  flex: none;
+  width: 88px;
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--cs-muted);
+}
+.cs-proj-val {
+  flex: none;
+  width: 46px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 700;
+}
+.cs-val-path {
+  color: var(--cs-warm);
+}
+.cs-val-stop {
+  color: var(--cs-stop);
+}
+
+/* Mini-axis labelling the Paris limits above the bars */
+.cs-proj-axis {
+  margin-bottom: 8px;
+}
+.cs-axis-track {
+  position: relative;
+  flex: 1;
+  height: 11px;
+}
+.cs-axis-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 9px;
+  white-space: nowrap;
+  color: var(--cs-muted);
+}
+
+.cs-proj-group {
+  margin-bottom: 14px;
+}
+.cs-proj-group:last-of-type {
+  margin-bottom: 0;
+}
+.cs-proj-year {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--cs-text);
+}
+.cs-proj-line {
+  margin-bottom: 6px;
+}
+.cs-proj-line:last-child {
+  margin-bottom: 0;
+}
+.cs-bar {
+  position: relative;
+  flex: 1;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--cs-track);
+}
+.cs-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+}
+.cs-fill-path {
+  background: linear-gradient(90deg, var(--cs-energy), var(--cs-warm));
+}
+.cs-fill-stop {
+  background: var(--cs-stop);
+}
+/* Paris 1.5°C / 2°C guide lines, sitting on top of the fill */
+.cs-grid {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 0;
+  border-left: 1px dashed var(--cs-text);
+  opacity: 0.45;
+}
+.cs-proj-caption {
+  margin: 12px 0 0;
+  font-size: 9.5px;
+  line-height: 1.45;
+  color: var(--cs-muted);
+}
+.cs-proj-caption strong {
+  color: var(--cs-text);
+  font-weight: 700;
+}
+
+/* Expandable disclosures (native <details>) */
+.cs-disclosure {
+  margin-top: 12px;
+}
+.cs-disclosure > summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--cs-muted);
+  transition: color 0.15s ease;
+}
+.cs-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+.cs-disclosure > summary::before {
+  content: '▸';
+  font-size: 9px;
+  transition: transform 0.15s ease;
+}
+.cs-disclosure[open] > summary::before {
+  transform: rotate(90deg);
+}
+.cs-disclosure > summary:hover {
+  color: var(--cs-text);
+}
+.cs-disclosure-body {
+  margin-top: 9px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--cs-muted);
+}
+.cs-disclosure[open] .cs-disclosure-body {
+  animation: cs-reveal 0.18s ease;
+}
+@keyframes cs-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Bottom "About / sources" link */
+.cs-foot {
+  margin-top: 14px;
+}
+.cs-foot .cs-disclosure-body p {
+  margin: 0 0 8px;
+}
+.cs-foot .cs-disclosure-body p:last-child {
+  margin-bottom: 0;
+}
+.cs-sources a {
+  color: var(--cs-carbon);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+.cs-sources a:hover {
+  color: var(--cs-energy);
+}
