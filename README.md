@@ -19,7 +19,7 @@ computed client-side.
 
 **Web Component (recommended):**
 ```html
-<script src="https://cdn.jsdelivr.net/gh/USER/REPO@1.0.0/climate-ticker.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/matjanw/climate-ticker@1.0.0/climate-ticker.js"></script>
 <climate-ticker></climate-ticker>
 ```
 Styles are sealed in a Shadow DOM, so it never clashes with the host page.
@@ -30,14 +30,14 @@ climate-ticker { --cs-bg: #fff; --cs-text: #111; }
 
 **iframe (simplest, great for CMS footers):**
 ```html
-<iframe src="https://USER.github.io/REPO/widget.html"
+<iframe src="https://matjanw.github.io/climate-ticker/widget.html"
         width="420" height="640" loading="lazy"
         style="border:0;max-width:100%"
         title="Climate Ticker — real-time climate counters"></iframe>
 ```
 
 **Hosting & pinning:** push to GitHub → served free via jsDelivr
-(`cdn.jsdelivr.net/gh/USER/REPO@TAG/…`) or GitHub Pages. Pin a version tag so
+(`cdn.jsdelivr.net/gh/matjanw/climate-ticker@TAG/…`) or GitHub Pages. Pin a version tag so
 embeds never break; optionally add a Subresource Integrity hash
 (`integrity="sha384-…" crossorigin="anonymous"`).
 
