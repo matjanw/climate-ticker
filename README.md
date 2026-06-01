@@ -74,7 +74,7 @@ python3 -m http.server 4178
 **Temperature** — warming above the 1850–1900 pre-industrial baseline.
 - Live counter rises from the present anomaly (~1.44 °C) at 0.27 °C/decade.
 - Projections show two futures per horizon year: **Current path** (recent
-  0.27 °C/decade trend; range 0.20–0.35) and **If we stop now** (committed
+  0.27 °C/decade trend; range 0.20–0.35) and **Stop emissions today** (committed
   warming, ~+0.2 °C above today as cooling aerosols fade). Bars are anchored to
   the 1.5 °C and 2 °C Paris limits. °C↔°F is a delta conversion (×9/5, no offset).
   Illustrative extrapolations, not IPCC scenarios.

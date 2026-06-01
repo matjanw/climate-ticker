@@ -114,8 +114,8 @@
           ([year, d]) => `
       <div class="cs-proj-group">
         <div class="cs-proj-year">By ${year}</div>
-        ${bar('cs-fill-path', 'Current path', fmt(d.mid), pct(d.mid), `Recent trend 0.27°C/decade. Range at 0.20–0.35: ${fmt(d.low)}–${fmt(d.high)}`)}
-        ${bar('cs-fill-stop', 'If we stop now', fmt(d.stopped), pct(d.stopped), `If emissions stop today, warming settles near ${fmt(d.stopped)}`)}
+        ${bar('cs-fill-path', 'Current projection', fmt(d.mid), pct(d.mid), `Recent trend 0.27°C/decade. Range at 0.20–0.35: ${fmt(d.low)}–${fmt(d.high)}`)}
+        ${bar('cs-fill-stop', 'Stop emissions today', fmt(d.stopped), pct(d.stopped), `If emissions stop today, warming settles near ${fmt(d.stopped)}`)}
       </div>`
         )
         .join('');
