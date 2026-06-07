@@ -89,15 +89,28 @@
       <h2>Option 2 — iframe (simplest, great for footers)</h2>
       <p>
         Total isolation, paste-and-go. Best when you can’t add a script tag
-        (CMS footers, marketing pages).
+        (CMS footers, marketing pages). The little script lets the frame
+        auto-resize to fit the widget — it adapts to the width you give it.
       </p>
       <div class="snippet">
         <button class="copy" data-target="snip-if">Copy</button>
-        <pre id="snip-if">&lt;iframe src="https://matjanw.github.io/climate-ticker/widget.html"
-        width="420" height="640" loading="lazy"
-        style="border:0;max-width:100%"
-        title="Climate Ticker — real-time climate counters"&gt;&lt;/iframe&gt;</pre>
+        <pre id="snip-if">&lt;iframe id="climate-ticker" src="https://matjanw.github.io/climate-ticker/widget.html"
+        width="100%" height="640" loading="lazy" scrolling="no"
+        style="border:0;max-width:720px;display:block;margin:0 auto"
+        title="Climate Ticker — real-time climate counters"&gt;&lt;/iframe&gt;
+&lt;script&gt;addEventListener('message',function(e){
+  if(e.data&&e.data.type==='climate-ticker:resize'){
+    var f=document.getElementById('climate-ticker');
+    if(f)f.style.height=e.data.height+'px';
+  }
+});&lt;/script&gt;</pre>
       </div>
+      <p class="note">
+        No-script builders (e.g. some Wix/Squarespace blocks): drop the
+        <code class="inline">&lt;script&gt;</code> and keep a fixed
+        <code class="inline">height</code>. Set the frame narrow for a stacked
+        card, or wide (up to 720px) for a short, horizontal banner.
+      </p>
 
       <h2>Hosting &amp; pinning</h2>
       <ul>

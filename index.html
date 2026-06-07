@@ -13,44 +13,46 @@
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
-    <div class="cs-widget">
+    <div class="cs-widget" role="region" aria-label="Climate Ticker — real-time climate counters">
       <header class="cs-head">
         <h1 class="cs-title">Climate Ticker</h1>
         <p class="cs-subtitle">Real-time atmospheric dashboard</p>
       </header>
 
-      <section class="cs-block">
-        <div class="cs-counter" id="carbon-odo"></div>
-        <div class="cs-row">
-          <span class="cs-caption">Carbon released since 1850</span>
-          <div class="cs-toggle" data-metric="carbon">
-            <button data-unit="kg">kg C</button>
-            <button data-unit="valdez">Valdez loads</button>
+      <div class="cs-metrics">
+        <section class="cs-block">
+          <div class="cs-counter" id="carbon-odo" role="img" aria-label="Carbon released since 1850, live counter"></div>
+          <div class="cs-row">
+            <span class="cs-caption">Carbon released since 1850</span>
+            <div class="cs-toggle" data-metric="carbon" role="group" aria-label="Carbon units">
+              <button type="button" data-unit="kg">kg C</button>
+              <button type="button" data-unit="valdez">Valdez loads</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="cs-block">
-        <div class="cs-counter" id="energy-odo"></div>
-        <div class="cs-row">
-          <span class="cs-caption">Extra heat trapped since 1850</span>
-          <div class="cs-toggle" data-metric="energy">
-            <button data-unit="kj">kJ</button>
-            <button data-unit="hiroshima">Hiroshima bombs</button>
+        <section class="cs-block">
+          <div class="cs-counter" id="energy-odo" role="img" aria-label="Extra heat trapped since 1850, live counter"></div>
+          <div class="cs-row">
+            <span class="cs-caption">Extra heat trapped since 1850</span>
+            <div class="cs-toggle" data-metric="energy" role="group" aria-label="Energy units">
+              <button type="button" data-unit="kj">kJ</button>
+              <button type="button" data-unit="hiroshima">Hiroshima bombs</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="cs-block">
-        <div class="cs-counter" id="warming-odo"></div>
-        <div class="cs-row">
-          <span class="cs-caption">Global warming since 1850</span>
-          <div class="cs-toggle" data-metric="temp">
-            <button data-unit="c">°C</button>
-            <button data-unit="f">°F</button>
+        <section class="cs-block">
+          <div class="cs-counter" id="warming-odo" role="img" aria-label="Global warming since 1850, live counter"></div>
+          <div class="cs-row">
+            <span class="cs-caption">Global warming since 1850</span>
+            <div class="cs-toggle" data-metric="temp" role="group" aria-label="Temperature units">
+              <button type="button" data-unit="c">°C</button>
+              <button type="button" data-unit="f">°F</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <section class="cs-block">
         <div class="cs-row cs-proj-head">

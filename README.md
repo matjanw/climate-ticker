@@ -28,13 +28,25 @@ Re-theme from outside with CSS variables:
 climate-ticker { --cs-bg: #fff; --cs-text: #111; }
 ```
 
-**iframe (simplest, great for CMS footers):**
+**iframe (simplest, great for CMS footers):** the small script lets the frame
+auto-resize to fit the widget. Drop it if your builder blocks scripts and just
+keep a fixed `height`.
 ```html
-<iframe src="https://matjanw.github.io/climate-ticker/widget.html"
-        width="420" height="640" loading="lazy"
-        style="border:0;max-width:100%"
+<iframe id="climate-ticker" src="https://matjanw.github.io/climate-ticker/widget.html"
+        width="100%" height="640" loading="lazy" scrolling="no"
+        style="border:0;max-width:720px;display:block;margin:0 auto"
         title="Climate Ticker — real-time climate counters"></iframe>
+<script>addEventListener('message',function(e){
+  if(e.data&&e.data.type==='climate-ticker:resize'){
+    var f=document.getElementById('climate-ticker');
+    if(f)f.style.height=e.data.height+'px';
+  }
+});</script>
 ```
+
+**Responsive:** the widget adapts to the width of *its own container* (via CSS
+container queries), not the screen — stacked in a narrow sidebar, a short wide
+banner past ~600px. Give it the width you want; it lays itself out to suit.
 
 **Hosting & pinning:** push to GitHub → served free via jsDelivr
 (`cdn.jsdelivr.net/gh/matjanw/climate-ticker@TAG/…`) or GitHub Pages. Pin a version tag so

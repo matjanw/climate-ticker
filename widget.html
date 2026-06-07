@@ -27,7 +27,8 @@
 
 .cs-widget {
   box-sizing: border-box;
-  max-width: 420px;
+  width: 100%;
+  max-width: 720px;
   margin: 0 auto;
   padding: 18px;
   background: var(--cs-bg);
@@ -35,6 +36,10 @@
   font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   border: 1px solid var(--cs-border);
   border-radius: 14px;
+  /* The widget adapts to the width it is GIVEN (its own box), not the screen,
+     so it lays out correctly in a narrow sidebar or a wide footer alike. */
+  container-type: inline-size;
+  container-name: cs;
 }
 .cs-widget *,
 .cs-widget *::before,
@@ -343,47 +348,83 @@
   color: var(--cs-energy);
 }
 
+/* ── Responsive: in a wide container, the three live counters sit side by
+   side (a short, wide banner). In a narrow one they stay stacked. Driven by
+   the widget's OWN width via a container query, so it works in any embed. ── */
+@container cs (min-width: 600px) {
+  .cs-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+  .cs-metrics > .cs-block {
+    margin-bottom: 12px;
+  }
+  /* Narrow columns: stack the caption above its toggle instead of side-by-side. */
+  .cs-metrics .cs-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* Keyboard focus visibility (accessibility). */
+.cs-widget :focus-visible {
+  outline: 2px solid var(--cs-energy);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-disclosure[open] .cs-disclosure-body {
+    animation: none;
+  }
+}
+
 </style>
   </head>
   <body>
-    <div class="cs-widget">
+    <div class="cs-widget" role="region" aria-label="Climate Ticker — real-time climate counters">
       <header class="cs-head">
         <h1 class="cs-title">Climate Ticker</h1>
         <p class="cs-subtitle">Real-time atmospheric dashboard</p>
       </header>
 
-      <section class="cs-block">
-        <div class="cs-counter" id="carbon-odo"></div>
-        <div class="cs-row">
-          <span class="cs-caption">Carbon released since 1850</span>
-          <div class="cs-toggle" data-metric="carbon">
-            <button data-unit="kg">kg C</button>
-            <button data-unit="valdez">Valdez loads</button>
+      <div class="cs-metrics">
+        <section class="cs-block">
+          <div class="cs-counter" id="carbon-odo" role="img" aria-label="Carbon released since 1850, live counter"></div>
+          <div class="cs-row">
+            <span class="cs-caption">Carbon released since 1850</span>
+            <div class="cs-toggle" data-metric="carbon" role="group" aria-label="Carbon units">
+              <button type="button" data-unit="kg">kg C</button>
+              <button type="button" data-unit="valdez">Valdez loads</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="cs-block">
-        <div class="cs-counter" id="energy-odo"></div>
-        <div class="cs-row">
-          <span class="cs-caption">Extra heat trapped since 1850</span>
-          <div class="cs-toggle" data-metric="energy">
-            <button data-unit="kj">kJ</button>
-            <button data-unit="hiroshima">Hiroshima bombs</button>
+        <section class="cs-block">
+          <div class="cs-counter" id="energy-odo" role="img" aria-label="Extra heat trapped since 1850, live counter"></div>
+          <div class="cs-row">
+            <span class="cs-caption">Extra heat trapped since 1850</span>
+            <div class="cs-toggle" data-metric="energy" role="group" aria-label="Energy units">
+              <button type="button" data-unit="kj">kJ</button>
+              <button type="button" data-unit="hiroshima">Hiroshima bombs</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="cs-block">
-        <div class="cs-counter" id="warming-odo"></div>
-        <div class="cs-row">
-          <span class="cs-caption">Global warming since 1850</span>
-          <div class="cs-toggle" data-metric="temp">
-            <button data-unit="c">°C</button>
-            <button data-unit="f">°F</button>
+        <section class="cs-block">
+          <div class="cs-counter" id="warming-odo" role="img" aria-label="Global warming since 1850, live counter"></div>
+          <div class="cs-row">
+            <span class="cs-caption">Global warming since 1850</span>
+            <div class="cs-toggle" data-metric="temp" role="group" aria-label="Temperature units">
+              <button type="button" data-unit="c">°C</button>
+              <button type="button" data-unit="f">°F</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <section class="cs-block">
         <div class="cs-row cs-proj-head">
@@ -705,6 +746,7 @@ window.CS_CONST = {
     warming: root.getElementById('warming-odo'),
     proj: root.getElementById('proj-rows'),
   };
+  const widgetEl = root.querySelector('.cs-widget');
 
   const SECONDS_PER_YEAR = 31556952; // mean Gregorian year
   const elapsedSeconds = () => (Date.now() - C.START_EPOCH_MS) / 1000;
@@ -786,7 +828,7 @@ window.CS_CONST = {
     const bar = (cls, name, value, w, title) => `
       <div class="cs-proj-line">
         <span class="cs-proj-name">${name}</span>
-        <span class="cs-bar"${title ? ` title="${title}"` : ''}>
+        <span class="cs-bar" aria-hidden="true"${title ? ` title="${title}"` : ''}>
           <span class="cs-fill ${cls}" style="width:${w}%"></span>${grid}
         </span>
         <span class="cs-proj-val ${cls === 'cs-fill-path' ? 'cs-val-path' : 'cs-val-stop'}">${value}</span>
@@ -828,20 +870,36 @@ window.CS_CONST = {
     else start();
   });
 
+  // ── Auto-resize: when embedded in an iframe, post our height to the host so
+  //    it can size the frame to fit — no scrollbars, fully responsive. ───────
+  const inIframe = typeof window !== 'undefined' && window.parent !== window;
+  function postHeight() {
+    if (!inIframe || !widgetEl) return;
+    const h = Math.ceil(widgetEl.getBoundingClientRect().height);
+    window.parent.postMessage({ type: 'climate-ticker:resize', height: h }, '*');
+  }
+
   root.querySelectorAll('.cs-toggle').forEach((toggle) => {
     const metric = toggle.dataset.metric;
     const buttons = toggle.querySelectorAll('button');
     buttons.forEach((btn) => {
-      btn.classList.toggle('active', btn.dataset.unit === state[metric]);
+      const on = btn.dataset.unit === state[metric];
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       btn.addEventListener('click', () => {
         state[metric] = btn.dataset.unit;
-        buttons.forEach((b) => b.classList.toggle('active', b === btn));
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
         if (metric === 'carbon') buildCarbon();
         else if (metric === 'energy') buildEnergy();
         else {
           buildWarming();
           renderProjections();
         }
+        postHeight();
       });
     });
   });
@@ -851,6 +909,28 @@ window.CS_CONST = {
     buildWarming();
     renderProjections();
     start();
+
+    // ── Responsive reels: when the widget's own width changes (e.g. switching
+    //    between stacked and wide layouts), rebuild the odometers so the digits
+    //    refit, then re-report height to any host iframe. ────────────────────
+    let lastW = els.carbon ? els.carbon.clientWidth : 0;
+    function refitIfResized() {
+      const w = els.carbon ? els.carbon.clientWidth : 0;
+      if (w && Math.abs(w - lastW) > 4) {
+        lastW = w;
+        buildCarbon();
+        buildEnergy();
+        buildWarming();
+      }
+      postHeight();
+    }
+    if (typeof ResizeObserver !== 'undefined' && widgetEl) {
+      new ResizeObserver(() => refitIfResized()).observe(widgetEl);
+    }
+    root.querySelectorAll('details').forEach((d) =>
+      d.addEventListener('toggle', postHeight)
+    );
+    postHeight();
   }
 
   // Expose for the Web Component (and any custom mount), then auto-mount on the

@@ -14,7 +14,8 @@
 
 .cs-widget {
   box-sizing: border-box;
-  max-width: 420px;
+  width: 100%;
+  max-width: 720px;
   margin: 0 auto;
   padding: 18px;
   background: var(--cs-bg);
@@ -22,6 +23,10 @@
   font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   border: 1px solid var(--cs-border);
   border-radius: 14px;
+  /* The widget adapts to the width it is GIVEN (its own box), not the screen,
+     so it lays out correctly in a narrow sidebar or a wide footer alike. */
+  container-type: inline-size;
+  container-name: cs;
 }
 .cs-widget *,
 .cs-widget *::before,
@@ -328,4 +333,38 @@
 }
 .cs-sources a:hover {
   color: var(--cs-energy);
+}
+
+/* ── Responsive: in a wide container, the three live counters sit side by
+   side (a short, wide banner). In a narrow one they stay stacked. Driven by
+   the widget's OWN width via a container query, so it works in any embed. ── */
+@container cs (min-width: 600px) {
+  .cs-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+  .cs-metrics > .cs-block {
+    margin-bottom: 12px;
+  }
+  /* Narrow columns: stack the caption above its toggle instead of side-by-side. */
+  .cs-metrics .cs-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* Keyboard focus visibility (accessibility). */
+.cs-widget :focus-visible {
+  outline: 2px solid var(--cs-energy);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-disclosure[open] .cs-disclosure-body {
+    animation: none;
+  }
 }

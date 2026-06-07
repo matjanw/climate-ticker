@@ -20,6 +20,7 @@
     warming: root.getElementById('warming-odo'),
     proj: root.getElementById('proj-rows'),
   };
+  const widgetEl = root.querySelector('.cs-widget');
 
   const SECONDS_PER_YEAR = 31556952; // mean Gregorian year
   const elapsedSeconds = () => (Date.now() - C.START_EPOCH_MS) / 1000;
@@ -101,7 +102,7 @@
     const bar = (cls, name, value, w, title) => `
       <div class="cs-proj-line">
         <span class="cs-proj-name">${name}</span>
-        <span class="cs-bar"${title ? ` title="${title}"` : ''}>
+        <span class="cs-bar" aria-hidden="true"${title ? ` title="${title}"` : ''}>
           <span class="cs-fill ${cls}" style="width:${w}%"></span>${grid}
         </span>
         <span class="cs-proj-val ${cls === 'cs-fill-path' ? 'cs-val-path' : 'cs-val-stop'}">${value}</span>
@@ -143,20 +144,36 @@
     else start();
   });
 
+  // ── Auto-resize: when embedded in an iframe, post our height to the host so
+  //    it can size the frame to fit — no scrollbars, fully responsive. ───────
+  const inIframe = typeof window !== 'undefined' && window.parent !== window;
+  function postHeight() {
+    if (!inIframe || !widgetEl) return;
+    const h = Math.ceil(widgetEl.getBoundingClientRect().height);
+    window.parent.postMessage({ type: 'climate-ticker:resize', height: h }, '*');
+  }
+
   root.querySelectorAll('.cs-toggle').forEach((toggle) => {
     const metric = toggle.dataset.metric;
     const buttons = toggle.querySelectorAll('button');
     buttons.forEach((btn) => {
-      btn.classList.toggle('active', btn.dataset.unit === state[metric]);
+      const on = btn.dataset.unit === state[metric];
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       btn.addEventListener('click', () => {
         state[metric] = btn.dataset.unit;
-        buttons.forEach((b) => b.classList.toggle('active', b === btn));
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
         if (metric === 'carbon') buildCarbon();
         else if (metric === 'energy') buildEnergy();
         else {
           buildWarming();
           renderProjections();
         }
+        postHeight();
       });
     });
   });
@@ -166,6 +183,28 @@
     buildWarming();
     renderProjections();
     start();
+
+    // ── Responsive reels: when the widget's own width changes (e.g. switching
+    //    between stacked and wide layouts), rebuild the odometers so the digits
+    //    refit, then re-report height to any host iframe. ────────────────────
+    let lastW = els.carbon ? els.carbon.clientWidth : 0;
+    function refitIfResized() {
+      const w = els.carbon ? els.carbon.clientWidth : 0;
+      if (w && Math.abs(w - lastW) > 4) {
+        lastW = w;
+        buildCarbon();
+        buildEnergy();
+        buildWarming();
+      }
+      postHeight();
+    }
+    if (typeof ResizeObserver !== 'undefined' && widgetEl) {
+      new ResizeObserver(() => refitIfResized()).observe(widgetEl);
+    }
+    root.querySelectorAll('details').forEach((d) =>
+      d.addEventListener('toggle', postHeight)
+    );
+    postHeight();
   }
 
   // Expose for the Web Component (and any custom mount), then auto-mount on the
